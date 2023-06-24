@@ -1,6 +1,6 @@
 # Audio Captioning recipe
 
-This repository provides a recipe for audio captioning with sequence to sequence models: data preprocessing, training, evaluation / prediction.
+This repository provides a recipe that incorporates SED (Sound Event Detection) to enhance the temporal information description in audio captioning.
 
 It supports:
 * Models:
@@ -8,25 +8,9 @@ It supports:
   * Text decoder: RNN, RNN with attention, Transformer
 * Training methods:
   * Vanilla cross entropy (XE) training
-  * [Scheduled sampling](https://arxiv.org/abs/1506.03099)
-  * XE with [sequence loss training](http://arxiv.org/abs/1905.13448)
-  * Self-critical sequence training ([scst](https://arxiv.org/abs/1612.00563))
 * Evaluation:
   * Beam search
   * Test time ensemble
-
-# Install
-
-In order to successfully run the audio captioning recipe, you need to install the prerequisite packages and frameworks.
-
-First checkout this repository:
-```bash
-git clone --recursive https://github.com/wsntxxn/AudioCaption
-```
-Then install the required packages:
-```bash
-pip install -r requirements.txt
-```
 
 # Data preprocessing
 
