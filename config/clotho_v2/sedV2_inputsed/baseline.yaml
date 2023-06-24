@@ -1,0 +1,65 @@
+outputpath: experiments/clotho_v2/sedV2
+remark: baseline
+data:
+    train:
+        raw_feat_csv: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/clotho_v2/dev/lms.csv
+        fc_feat_csv: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/clotho_v2/dev/clap_features/cnn14/fc.csv
+        attn_feat_csv: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/clotho_v2/dev/clap_features/cnn14/attn.csv
+        caption_file: data/sedV2_audiocaps/cnn8_rnn_finetune_from_weak/clotho_v2_dev_WoModifyAnnotation_text.json
+    val:
+        raw_feat_csv: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/clotho_v2/val/lms.csv
+        fc_feat_csv: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/clotho_v2/val/clap_features/cnn14/fc.csv
+        attn_feat_csv: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/clotho_v2/val/clap_features/cnn14/attn.csv
+        caption_file: data/sedV2_audiocaps/cnn8_rnn_finetune_from_weak/clotho_v2_val_WoModifyAnnotation_text.json
+    vocab_file: data/audiocaps/train/vocab.pkl
+zh: False
+train_dataset_fn: CaptionDataset 
+dataloader_args:
+    batch_size: 128
+    num_workers: 4
+augments: [timemask, freqmask, randomcrop]
+distributed: False
+
+encoder: RnnEncoder
+encoder_args:
+    bidirectional: True
+    hidden_size: 256
+    num_layers: 3
+    dropout: 0.5
+decoder: BahAttnDecoder
+decoder_args:
+    emb_dim: 512
+    fc_emb_dim: 512
+    attn_emb_dim: 512
+    rnn_type: GRU
+    num_layers: 1
+    d_model: 512
+    dropout: 0.5
+model: Seq2SeqAttnModel
+model_args: {}
+
+improvecriterion: score # Can be acc | loss | score
+
+optimizer: Adam
+optimizer_args:
+    lr: !!float 5e-4
+    weight_decay: 0.0
+max_grad_norm: 0.5
+epochs: 25
+scheduler: ExponentialDecayScheduler
+scheduler_args:
+    final_lrs: !!float 2e-6
+    
+
+ss: True
+ss_args:
+    ss_mode: linear
+    ss_ratio: 1.0
+    final_ss_ratio: 0.7
+
+loss: LabelSmoothingLoss
+loss_args:
+    smoothing: 0.1
+
+swa: True
+swa_start: 21

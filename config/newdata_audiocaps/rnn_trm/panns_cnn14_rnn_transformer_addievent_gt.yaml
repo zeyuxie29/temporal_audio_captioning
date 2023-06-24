@@ -1,0 +1,68 @@
+outputpath: experiments/newdata_audiocaps
+remark: panns_cnn14_rnn_trm_addievent_keyword_gt
+
+add_info_column: gt_label
+data:
+    train:
+        raw_feat_csv: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/audiocaps/train/lms.csv
+        fc_feat_csv: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/audiocaps/train/panns_wavegram_logmel_cnn14_fc.csv
+        attn_feat_csv: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/audiocaps/train/panns_wavegram_logmel_cnn14_attn.csv
+        caption_file: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/audiocaps/train/text.json
+        additional_file: data/newdata_audiocaps/train_keyword_from_gt_event_lemma_withunk.json
+    val:
+        raw_feat_csv: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/audiocaps/val/lms.csv
+        fc_feat_csv: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/audiocaps/val/panns_wavegram_logmel_cnn14_fc.csv
+        attn_feat_csv: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/audiocaps/val/panns_wavegram_logmel_cnn14_attn.csv
+        caption_file: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/audiocaps/val/text.json
+        additional_file: data/newdata_audiocaps/val_keyword_from_gt_event_lemma_withunk.json 
+    vocab_file: data/audiocaps/train/vocab.pkl
+    add_vocab_file: data/audiocaps/all/keyword_from_gtevent_lemma_vocab_withunk.pth
+zh: False
+dataloader_args:
+    batch_size: 64
+    num_workers: 1
+augments: [timemask, freqmask, randomcrop]
+distributed: False
+
+encoder: RnnEncoder
+encoder_args:
+    bidirectional: True
+    hidden_size: 256
+    dropout: 0.5
+    num_layers: 3
+decoder: TransformerAddinfoDecoder
+decoder_args:
+    emb_dim: 256
+    fc_emb_dim: 512
+    attn_emb_dim: 512
+    nlayers: 2
+    dropout: 0.2
+model: TransformerAddinfoModel
+model_args: {}
+
+improvecriterion: score # Can be acc | loss | score
+
+optimizer: Adam
+optimizer_args:
+    lr: !!float 5e-4
+    weight_decay: !!float 1e-6
+max_grad_norm: 1.0
+epochs: 25
+scheduler: ExponentialDecayScheduler
+scheduler_args:
+    # warmup_iters: 3000
+    final_lrs: !!float 5e-7
+    
+
+ss: True
+ss_args:
+    ss_mode: linear
+    ss_ratio: 1.0
+    final_ss_ratio: 0.7
+
+loss: LabelSmoothingLoss
+loss_args:
+    smoothing: 0.1
+
+swa: True
+swa_start: 21

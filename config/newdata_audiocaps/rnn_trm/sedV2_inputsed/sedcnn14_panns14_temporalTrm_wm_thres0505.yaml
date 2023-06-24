@@ -1,0 +1,64 @@
+outputpath: experiments/newdata_audiocaps/sedV2
+remark: SedCnn14_temporalTrm_wm_thres0505
+data:
+    train:
+        raw_feat_csv: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/audiocaps/train/lms.csv
+        fc_feat_csv: data/newdata_audiocaps/train/wlcnn14/fc.csv
+        attn_feat_csv: data/newdata_audiocaps/train/wlcnn14/attn.csv   
+        caption_file: data/sedV2/cnn14_att_finetune_from_weak/audiocaps_train_wm_thres0505_text.json
+    val:
+        raw_feat_csv: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/audiocaps/val/lms.csv
+        fc_feat_csv: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/audiocaps/val/panns_wavegram_logmel_cnn14_fc.csv
+        attn_feat_csv: /mnt/lustre/sjtu/home/xnx98/work/AudioCaption/data/audiocaps/val/panns_wavegram_logmel_cnn14_attn.csv
+        caption_file: data/sedV2/cnn14_att_finetune_from_weak/audiocaps_val_wm_thres0505_text.json
+    vocab_file: data/audiocaps/train/vocab.pkl
+zh: False
+train_dataset_fn: CaptionDatasetTemporal 
+dataloader_args:
+    batch_size: 32
+    num_workers: 1
+augments: [timemask, freqmask, randomcrop]
+distributed: False
+
+encoder: RnnEncoder
+encoder_args:
+    bidirectional: True
+    hidden_size: 256
+    num_layers: 3
+    dropout: 0.5
+decoder: TransformerTemporalDecoder
+decoder_args:
+    emb_dim: 512
+    fc_emb_dim: 512
+    attn_emb_dim: 512
+    nlayers: 2
+    dropout: 0.2
+model: TransformerTemporalModel
+model_args: {}
+
+improvecriterion: score # Can be acc | loss | score
+optimizer: Adam
+optimizer_args:
+    lr: !!float 5e-4
+    weight_decay: !!float 1e-6
+max_grad_norm: 1.0
+epochs: 25
+scheduler: ExponentialDecayScheduler
+scheduler_args:
+    # warmup_iters: 3000
+    final_lrs: !!float 5e-7
+    
+
+ss: True
+ss_args:
+    ss_mode: linear
+    ss_ratio: 1.0
+    final_ss_ratio: 0.7
+
+loss: LabelSmoothingLoss
+loss_args:
+    smoothing: 0.1
+
+swa: True
+swa_start: 21
+
