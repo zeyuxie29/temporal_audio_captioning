@@ -70,8 +70,8 @@ To test temporal information, use:
 ```bash
 export EXP_PATH=experiments/***
 python python utils/utils_temporal/temporal_result.py \
-get_result \
-$EXP_PATH/output.json
+    get_result \
+    $EXP_PATH/output.json
 ```
 
 
