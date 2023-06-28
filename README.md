@@ -22,7 +22,7 @@ It supports:
 
 
 
-# Training(Not deployed yet and coming soon)
+# Training(Not deployed yet but coming soon)
 
 ## Configuration
 The training configuration is written in a YAML file and passed to the training script.
@@ -66,7 +66,7 @@ python runners/run.py \
 
 Standard captioning metrics (BLEU@1-4, ROUGE-L, CIDEr, METEOR and SPICE) will be calculated.
 
-To test temporal information 
+To test temporal information, use:
 ```bash
 export EXP_PATH=experiments/***
 python python utils/utils_temporal/temporal_result.py \
