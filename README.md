@@ -21,7 +21,7 @@ It supports:
   * Different SED input
 
 # Inference
-For quick usage, Our official code repository [https://github.com/zeyuxie29/temporal_audio_captioning/assets/137248520/fec2ab18-8b2e-4ed0-afb5-addc7d0fb078](https://github.com/wsntxxn/AudioCaption?tab=readme-ov-file#temporal-sensitive-and-controllable-model) provides an inference inference with Hugging Face🤗.
+For quick usage, Our [official code repository](https://github.com/wsntxxn/AudioCaption?tab=readme-ov-file#temporal-sensitive-and-controllable-model) provides an inference inference with Hugging Face🤗.
 
 
 # Training
