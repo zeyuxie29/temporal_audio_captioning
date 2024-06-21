@@ -1,4 +1,4 @@
-# Audio Captioning recipe
+# Audio Captioning Recipe
 
 This repository provides a recipe that incorporates SED (Sound Event Detection) to enhance the temporal information description in AAC (automatic audio captioning).
 Paper Link: https://arxiv.org/abs/2306.01533
@@ -20,9 +20,11 @@ It supports:
   * Beam search
   * Different SED input
 
+# Inference
+For quick usage, Our official code repository [https://github.com/zeyuxie29/temporal_audio_captioning/assets/137248520/fec2ab18-8b2e-4ed0-afb5-addc7d0fb078](https://github.com/wsntxxn/AudioCaption?tab=readme-ov-file#temporal-sensitive-and-controllable-model) provides an inference inference with Hugging Face🤗.
 
 
-# Training(Not deployed yet but coming soon)
+# Training
 
 ## Configuration
 The training configuration is written in a YAML file and passed to the training script.
